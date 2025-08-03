@@ -12,6 +12,7 @@ coverage/
 .github/
 .gitignore
 .npmignore
+CONTRIBUTING.md
 
 # Development files
 .branch2ports
