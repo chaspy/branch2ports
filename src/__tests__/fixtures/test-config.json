@@ -1,0 +1,9 @@
+{
+  "basePort": {
+    "web": 8080,
+    "api": 8090,
+    "db": 5432
+  },
+  "outputFile": ".env.test",
+  "offsetRange": 500
+}

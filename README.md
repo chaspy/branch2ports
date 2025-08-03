@@ -1,5 +1,9 @@
 # branch2ports
 
+[![CI](https://github.com/chaspy/branch2ports/actions/workflows/ci.yml/badge.svg)](https://github.com/chaspy/branch2ports/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/branch2ports.svg)](https://www.npmjs.com/package/branch2ports)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A CLI tool that dynamically generates port numbers based on repository and branch names
 
 ## Overview

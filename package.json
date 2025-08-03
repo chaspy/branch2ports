@@ -1,6 +1,6 @@
 {
   "name": "branch2ports",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A CLI tool that dynamically generates port numbers based on repository and branch names",
   "main": "dist/index.js",
   "bin": {
@@ -10,6 +10,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "prepublishOnly": "npm run build",
     "lint": "eslint src/**/*.ts",
     "typecheck": "tsc --noEmit"

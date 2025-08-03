@@ -1,0 +1,23 @@
+# Source files
+src/
+tsconfig.json
+
+# Test files
+**/__tests__/
+jest.config.js
+coverage/
+
+# Config files
+.eslintrc.js
+.github/
+.gitignore
+.npmignore
+
+# Development files
+.branch2ports
+.branch2ports.example
+.env*
+
+# Build artifacts
+*.log
+.DS_Store

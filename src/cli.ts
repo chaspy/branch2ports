@@ -5,12 +5,14 @@ import { generatePorts } from './index';
 import { initConfig } from './init';
 import { CLIOptions } from './types';
 
+const packageJson = require('../package.json');
+
 const program = new Command();
 
 program
   .name('branch2ports')
   .description('A CLI tool that dynamically generates port numbers based on repository and branch names')
-  .version('1.0.0');
+  .version(packageJson.version);
 
 program
   .command('generate', { isDefault: true })
