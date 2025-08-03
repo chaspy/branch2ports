@@ -1,0 +1,50 @@
+{
+  "name": "branch2ports",
+  "version": "1.0.0",
+  "description": "ブランチ名とディレクトリ名を基に動的にポート番号を生成するCLIツール",
+  "main": "dist/index.js",
+  "bin": {
+    "branch2ports": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "worktree",
+    "ports",
+    "development",
+    "docker"
+  ],
+  "author": "chaspy",
+  "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "commander": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaspy/branch2ports.git"
+  }
+}
