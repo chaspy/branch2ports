@@ -30,7 +30,7 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "commander": "^11.0.0"
+    "commander": "^14.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
