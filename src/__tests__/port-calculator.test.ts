@@ -42,7 +42,6 @@ describe('port-calculator', () => {
 
   describe('generatePortNumbers', () => {
     // Mock git commands
-    const originalExecSync = require('child_process').execSync;
     
     beforeEach(() => {
       jest.spyOn(require('child_process'), 'execSync').mockImplementation((cmd: unknown) => {
