@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { generateEnvContent, writePortsToFile, generatePorts } from '../index';
 import { PortResult } from '../types';
 import * as config from '../config';
