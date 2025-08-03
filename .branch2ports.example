@@ -1,0 +1,9 @@
+{
+  "basePort": {
+    "frontend": 3000,
+    "backend": 5000,
+    "database": 5432
+  },
+  "outputFile": ".env",
+  "offsetRange": 1000
+}

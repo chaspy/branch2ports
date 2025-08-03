@@ -33,7 +33,7 @@ npx branch2ports --output .env.local
 
 ## 設定ファイル
 
-プロジェクトルートに `.branch2ports` ファイルを作成して設定を行います。
+プロジェクトルートに `.branch2ports` ファイルを作成して設定を行います。サンプルとして `.branch2ports.example` を参考にしてください。
 
 ```json
 {
