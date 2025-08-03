@@ -17,7 +17,7 @@ export function getRepositoryIdentifier(): string {
       }).trim();
       return repoRoot;
     } catch {
-      console.warn('Gitリポジトリの識別に失敗しました。現在のディレクトリを使用します。');
+      console.warn('Failed to identify Git repository. Using current directory.');
       return process.cwd();
     }
   }
@@ -31,7 +31,7 @@ export function getCurrentBranch(): string {
     }).trim();
     return branch;
   } catch {
-    console.warn('Gitブランチの取得に失敗しました。ディレクトリ名のみを使用します。');
+    console.warn('Failed to get Git branch. Using directory name only.');
     return '';
   }
 }
@@ -50,12 +50,12 @@ export function generatePortNumbers(
   const branchName = getCurrentBranch();
   const seedString = `${repositoryId}-${branchName}`;
   
-  console.log(`リポジトリ: ${repositoryId}`);
-  console.log(`ブランチ: ${branchName || '(不明)'}`);
-  console.log(`シード文字列: ${seedString}`);
+  console.log(`Repository: ${repositoryId}`);
+  console.log(`Branch: ${branchName || '(unknown)'}`);
+  console.log(`Seed string: ${seedString}`);
   
   const offset = calculateOffset(seedString, offsetRange);
-  console.log(`オフセット値: ${offset}`);
+  console.log(`Offset: ${offset}`);
   
   const results: PortResult[] = [];
   

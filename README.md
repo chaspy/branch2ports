@@ -1,39 +1,39 @@
 # branch2ports
 
-ブランチ名とディレクトリ名を基に動的にポート番号を生成するCLIツール
+A CLI tool that dynamically generates port numbers based on repository and branch names
 
-## 概要
+## Overview
 
-`branch2ports`は、git worktreeや複数ブランチでの並行開発時に、ポート番号の競合を避けるためのツールです。ディレクトリ名とブランチ名をハッシュ化してオフセット値を計算し、ベースポートに加算することで一意なポート番号を生成します。
+`branch2ports` is a tool designed to avoid port conflicts when developing with git worktree or multiple branches in parallel. It generates unique port numbers by hashing the combination of repository identifier and branch name, then calculating an offset to add to base ports.
 
-## 使用方法
+## Usage
 
-### 初回セットアップ
+### Initial Setup
 
 ```bash
-# 対話的に設定ファイルを作成
+# Create configuration file interactively
 npx branch2ports init
 ```
 
-### ポート番号生成
+### Port Generation
 
 ```bash
-# 基本的な使用方法
+# Basic usage
 npx branch2ports
 
-# または明示的にgenerateコマンドを指定
+# Or explicitly specify generate command
 npx branch2ports generate
 
-# カスタム設定ファイルを指定
+# Specify custom configuration file
 npx branch2ports --config .my-config
 
-# 出力ファイルを指定
+# Specify output file
 npx branch2ports --output .env.local
 ```
 
-## 設定ファイル
+## Configuration
 
-プロジェクトルートに `.branch2ports` ファイルを作成して設定を行います。サンプルとして `.branch2ports.example` を参考にしてください。
+Create a `.branch2ports` file in your project root. Refer to `.branch2ports.example` for a sample configuration.
 
 ```json
 {
@@ -47,55 +47,55 @@ npx branch2ports --output .env.local
 }
 ```
 
-### 設定項目
+### Configuration Options
 
-- `basePort`: サービスごとのベースポート番号を定義
-- `outputFile`: 生成されるポート番号を出力するファイル名（デフォルト: `.env`）
-- `offsetRange`: オフセット値の範囲（デフォルト: 1000）
+- `basePort`: Define base port numbers for each service
+- `outputFile`: Output file name for generated port numbers (default: `.env`)
+- `offsetRange`: Range for offset values (default: 1000)
 
-## 動作原理
+## How It Works
 
-1. Gitリポジトリの識別子（リモートURL→リポジトリルートパス→現在のディレクトリの順で取得）とブランチ名を取得
-2. リポジトリ識別子 + ブランチ名の文字列をハッシュ化
-3. ハッシュ値を`offsetRange`で割った余りをオフセット値として計算
-4. ベースポート + オフセット値で最終的なポート番号を決定
-5. 指定された出力ファイルに環境変数として書き出し
+1. Retrieves Git repository identifier (remote URL → repository root path → current directory, in order of preference) and branch name
+2. Hashes the combination of repository identifier + branch name
+3. Calculates offset value as the hash modulo `offsetRange`
+4. Determines final port numbers by adding offset to base ports
+5. Writes the results to the specified output file as environment variables
 
-**一意性の保証**: 同じリポジトリの同じブランチなら常に同じポート番号、異なるリポジトリや異なるブランチなら異なるポート番号が生成されます。
+**Uniqueness Guarantee**: The same repository and branch combination always generates the same port numbers, while different repositories or branches generate different port numbers.
 
-## 出力例
+## Output Example
 
 ```bash
-# .env ファイルの出力例
+# .env file output example
 FRONTEND_PORT=3247
 BACKEND_PORT=5247
 DATABASE_PORT=5679
 ```
 
-## 使用ケース
+## Use Cases
 
-- git worktreeを使った複数環境での並行開発
-- 複数ブランチでのローカル開発環境構築
-- Docker Composeでのポート番号管理
-- 開発チーム内でのポート競合回避
+- Parallel development with git worktree
+- Local development environment with multiple branches
+- Port management for Docker Compose
+- Avoiding port conflicts within development teams
 
-## 技術仕様
+## Technical Specifications
 
-- **言語**: TypeScript
-- **実行環境**: Node.js
-- **依存関係**: 最小限（commander.js等のCLIライブラリ）
-- **配布方法**: npm パッケージ（npx実行可能）
+- **Language**: TypeScript
+- **Runtime**: Node.js
+- **Dependencies**: Minimal (CLI libraries like commander.js)
+- **Distribution**: npm package (executable via npx)
 
-## 開発・貢献
+## Development & Contributing
 
 ```bash
-# 開発環境のセットアップ
+# Setup development environment
 npm install
 npm run build
 
-# テスト実行
+# Run tests
 npm test
 
-# パッケージのビルド
+# Build package
 npm run build
 ```

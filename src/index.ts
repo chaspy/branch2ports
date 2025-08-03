@@ -14,7 +14,7 @@ export function writePortsToFile(ports: PortResult[], outputPath: string): void 
   const fullPath = path.resolve(outputPath);
   
   fs.writeFileSync(fullPath, content, 'utf-8');
-  console.log(`ポート設定を ${outputPath} に書き込みました:`);
+  console.log(`Port settings written to ${outputPath}:`);
   
   ports.forEach(port => {
     console.log(`  ${port.envVar}=${port.port} (${port.service})`);

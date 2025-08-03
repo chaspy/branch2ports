@@ -9,33 +9,33 @@ const program = new Command();
 
 program
   .name('branch2ports')
-  .description('ブランチ名とディレクトリ名を基に動的にポート番号を生成するCLIツール')
+  .description('A CLI tool that dynamically generates port numbers based on repository and branch names')
   .version('1.0.0');
 
 program
   .command('generate', { isDefault: true })
-  .description('ポート番号を生成して出力ファイルに書き込み')
-  .option('-c, --config <file>', '設定ファイルのパス', '.branch2ports')
-  .option('-o, --output <file>', '出力ファイルのパス')
+  .description('Generate port numbers and write to output file')
+  .option('-c, --config <file>', 'Configuration file path', '.branch2ports')
+  .option('-o, --output <file>', 'Output file path')
   .action(async (options: CLIOptions) => {
     try {
       await generatePorts(options);
-      console.log('ポート番号の生成が完了しました');
+      console.log('Port generation completed successfully');
     } catch (error) {
-      console.error('エラーが発生しました:', error instanceof Error ? error.message : error);
+      console.error('Error:', error instanceof Error ? error.message : error);
       process.exit(1);
     }
   });
 
 program
   .command('init')
-  .description('設定ファイルを対話的に作成')
-  .option('-c, --config <file>', '設定ファイルのパス', '.branch2ports')
+  .description('Create configuration file interactively')
+  .option('-c, --config <file>', 'Configuration file path', '.branch2ports')
   .action(async (options: { config?: string }) => {
     try {
       await initConfig(options.config);
     } catch (error) {
-      console.error('エラーが発生しました:', error instanceof Error ? error.message : error);
+      console.error('Error:', error instanceof Error ? error.message : error);
       process.exit(1);
     }
   });

@@ -1,7 +1,7 @@
 {
   "name": "branch2ports",
   "version": "1.0.0",
-  "description": "ブランチ名とディレクトリ名を基に動的にポート番号を生成するCLIツール",
+  "description": "A CLI tool that dynamically generates port numbers based on repository and branch names",
   "main": "dist/index.js",
   "bin": {
     "branch2ports": "dist/cli.js"

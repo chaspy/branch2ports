@@ -16,7 +16,7 @@ export function loadConfig(configPath: string): Config {
   const fullPath = path.resolve(configPath);
   
   if (!fs.existsSync(fullPath)) {
-    console.log(`設定ファイル ${configPath} が見つかりません。デフォルト設定を使用します。`);
+    console.log(`Configuration file ${configPath} not found. Using default settings.`);
     return DEFAULT_CONFIG;
   }
 
@@ -33,8 +33,8 @@ export function loadConfig(configPath: string): Config {
       },
     };
   } catch (error) {
-    console.error(`設定ファイルの読み込みに失敗しました: ${error}`);
-    console.log('デフォルト設定を使用します。');
+    console.error(`Failed to load configuration file: ${error}`);
+    console.log('Using default settings.');
     return DEFAULT_CONFIG;
   }
 }
@@ -42,5 +42,5 @@ export function loadConfig(configPath: string): Config {
 export function createDefaultConfig(configPath: string): void {
   const configData = JSON.stringify(DEFAULT_CONFIG, null, 2);
   fs.writeFileSync(configPath, configData, 'utf-8');
-  console.log(`デフォルト設定ファイルを作成しました: ${configPath}`);
+  console.log(`Created default configuration file: ${configPath}`);
 }
