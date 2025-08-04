@@ -1,6 +1,6 @@
 {
   "name": "branch2ports",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A CLI tool that dynamically generates port numbers based on repository and branch names",
   "main": "dist/index.js",
   "bin": {
