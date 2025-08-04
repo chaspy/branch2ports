@@ -3,8 +3,47 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Config } from './types';
 
+/**
+ * Validates a file path to prevent path traversal attacks
+ * @param input The file path to validate
+ * @param allowedExtensions Optional array of allowed file extensions
+ * @returns The validated file path
+ * @throws Error if the path is invalid
+ */
+function validateFilePath(input: string, allowedExtensions?: string[]): string {
+  // Reject dangerous patterns
+  if (input.includes('..') || input.includes('~') || path.isAbsolute(input)) {
+    throw new Error('Invalid file path. Please use a relative path without ".." or "~"');
+  }
+  
+  // Validate file name characters
+  const basename = path.basename(input);
+  const safePattern = /^[a-zA-Z0-9._-]+$/;
+  if (!safePattern.test(basename)) {
+    throw new Error('File name contains invalid characters. Only letters, numbers, dots, underscores, and hyphens are allowed');
+  }
+  
+  // Check file extension if specified
+  if (allowedExtensions && allowedExtensions.length > 0) {
+    const ext = path.extname(basename);
+    if (!allowedExtensions.includes(ext)) {
+      throw new Error(`Invalid file extension. Allowed extensions: ${allowedExtensions.join(', ')}`);
+    }
+  }
+  
+  return input;
+}
+
 export async function initConfig(configPath: string = '.branch2ports'): Promise<void> {
   console.log('🚀 Creating branch2ports configuration file\n');
+  
+  // Validate config path
+  try {
+    validateFilePath(configPath);
+  } catch (error) {
+    console.error(`Invalid configuration file path: ${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
   
   const rl = readline.createInterface({
     input: process.stdin,
@@ -59,7 +98,17 @@ export async function initConfig(configPath: string = '.branch2ports'): Promise<
     }
   }
 
-  const outputFile = await question('Specify output file name (.env): ') || '.env';
+  const outputFileInput = await question('Specify output file name (.env): ') || '.env';
+  let outputFile: string;
+  try {
+    outputFile = validateFilePath(outputFileInput);
+  } catch (error) {
+    console.error(`Invalid output file path: ${error instanceof Error ? error.message : error}`);
+    rl.close();
+    process.stdin.removeListener('end', handleStdinEnd);
+    process.exit(1);
+  }
+  
   const offsetRangeInput = await question('Specify offset range (1000): ');
   const offsetRange = parseInt(offsetRangeInput) || 1000;
 
