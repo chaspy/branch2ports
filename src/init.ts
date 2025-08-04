@@ -8,9 +8,39 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+let eofDetected = false;
+
+// Listen for EOF on stdin
+process.stdin.on('end', () => {
+  eofDetected = true;
+});
+
 function question(prompt: string): Promise<string> {
   return new Promise((resolve) => {
-    rl.question(prompt, resolve);
+    // If EOF was already detected, return empty string immediately
+    if (eofDetected) {
+      resolve('');
+      return;
+    }
+    
+    // Track if the question has been answered
+    let answered = false;
+    
+    rl.question(prompt, (answer) => {
+      answered = true;
+      resolve(answer);
+    });
+    
+    // Handle EOF (Ctrl+D or end of input)
+    const handleClose = () => {
+      if (!answered) {
+        eofDetected = true;
+        resolve('');
+      }
+    };
+    
+    rl.once('close', handleClose);
+    process.stdin.once('end', handleClose);
   });
 }
 
