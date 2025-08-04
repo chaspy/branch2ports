@@ -21,6 +21,24 @@ describe('branch2ports CLI E2E tests', () => {
   });
 
   describe('generate command', () => {
+    it('should exit cleanly without hanging', (done) => {
+      // This test verifies that the generate command doesn't hang
+      const startTime = Date.now();
+      
+      const output = execSync(`node ${cliPath}`, { 
+        encoding: 'utf-8',
+        timeout: 5000 // 5 second timeout
+      });
+      
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+      
+      // The command should complete quickly (less than 2 seconds)
+      expect(duration).toBeLessThan(2000);
+      expect(output).toContain('Port generation completed successfully');
+      done();
+    });
+
     it('should generate port numbers with default configuration', () => {
       const output = execSync(`node ${cliPath}`, { encoding: 'utf-8' });
       

@@ -3,49 +3,50 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Config } from './types';
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-let eofDetected = false;
-
-// Listen for EOF on stdin
-process.stdin.on('end', () => {
-  eofDetected = true;
-});
-
-function question(prompt: string): Promise<string> {
-  return new Promise((resolve) => {
-    // If EOF was already detected, return empty string immediately
-    if (eofDetected) {
-      resolve('');
-      return;
-    }
-    
-    // Track if the question has been answered
-    let answered = false;
-    
-    rl.question(prompt, (answer) => {
-      answered = true;
-      resolve(answer);
-    });
-    
-    // Handle EOF (Ctrl+D or end of input)
-    const handleClose = () => {
-      if (!answered) {
-        eofDetected = true;
-        resolve('');
-      }
-    };
-    
-    rl.once('close', handleClose);
-    process.stdin.once('end', handleClose);
-  });
-}
-
 export async function initConfig(configPath: string = '.branch2ports'): Promise<void> {
   console.log('🚀 Creating branch2ports configuration file\n');
+  
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  let eofDetected = false;
+
+  // Listen for EOF on stdin
+  const handleStdinEnd = () => {
+    eofDetected = true;
+  };
+  process.stdin.on('end', handleStdinEnd);
+
+  function question(prompt: string): Promise<string> {
+    return new Promise((resolve) => {
+      // If EOF was already detected, return empty string immediately
+      if (eofDetected) {
+        resolve('');
+        return;
+      }
+      
+      // Track if the question has been answered
+      let answered = false;
+      
+      rl.question(prompt, (answer) => {
+        answered = true;
+        resolve(answer);
+      });
+      
+      // Handle EOF (Ctrl+D or end of input)
+      const handleClose = () => {
+        if (!answered) {
+          eofDetected = true;
+          resolve('');
+        }
+      };
+      
+      rl.once('close', handleClose);
+      process.stdin.once('end', handleClose);
+    });
+  }
 
   const fullPath = path.resolve(configPath);
   
@@ -125,6 +126,11 @@ export async function initConfig(configPath: string = '.branch2ports'): Promise<
   } catch (error) {
     console.error('Failed to create configuration file:', error);
   } finally {
+    // Clean up
     rl.close();
+    process.stdin.removeListener('end', handleStdinEnd);
+    // Resume stdin to prevent hanging
+    process.stdin.resume();
+    process.stdin.pause();
   }
 }
