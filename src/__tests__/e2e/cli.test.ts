@@ -96,9 +96,46 @@ describe('branch2ports CLI E2E tests', () => {
   });
 
   describe('init command', () => {
-    it.skip('should create configuration file with default inputs', () => {
-      // Skip for now - interactive prompts are difficult to test in CI
-      // TODO: Consider refactoring init command to be more testable
+    it('should handle EOF gracefully and create default configuration', () => {
+      // Test with EOF input (simulating < /dev/null)
+      const result = execSync(`node ${cliPath} init < /dev/null`, { 
+        encoding: 'utf-8'
+      });
+      
+      expect(result).toContain('Creating branch2ports configuration file');
+      expect(result).toContain('Configuration file .branch2ports created!');
+      expect(result).toContain('Output file: .env');
+      expect(result).toContain('Offset range: 1000');
+      expect(result).toContain('frontend: 3000');
+      expect(result).toContain('backend: 5000');
+      expect(result).toContain('database: 5432');
+      
+      // Verify config file was created with defaults
+      expect(fs.existsSync('.branch2ports')).toBe(true);
+      const config = JSON.parse(fs.readFileSync('.branch2ports', 'utf-8'));
+      expect(config.outputFile).toBe('.env');
+      expect(config.offsetRange).toBe(1000);
+      expect(config.basePort.frontend).toBe(3000);
+      expect(config.basePort.backend).toBe(5000);
+      expect(config.basePort.database).toBe(5432);
+    });
+
+    it('should exit gracefully without hanging when EOF is received', (done) => {
+      // This test verifies the fix for the EOF handling issue
+      // It should complete within a reasonable time (5 seconds)
+      const startTime = Date.now();
+      
+      execSync(`node ${cliPath} init < /dev/null`, { 
+        encoding: 'utf-8',
+        timeout: 5000 // 5 second timeout
+      });
+      
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+      
+      // The command should complete quickly (less than 2 seconds)
+      expect(duration).toBeLessThan(2000);
+      done();
     });
 
     it.skip('should not overwrite existing config without confirmation', () => {
