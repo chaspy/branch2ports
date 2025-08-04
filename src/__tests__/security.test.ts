@@ -35,7 +35,7 @@ describe('Security tests', () => {
             stdio: 'pipe'
           });
           // If we reach here, the command didn't fail as expected
-          fail(`Expected command to fail for dangerous path: ${dangerousPath}`);
+          throw new Error(`Expected command to fail for dangerous path: ${dangerousPath}`);
         } catch (error) {
           // Expected behavior - command should fail
           expect(error).toBeDefined();
@@ -60,7 +60,7 @@ describe('Security tests', () => {
             stdio: 'pipe'
           });
           // If we reach here, the command didn't fail as expected
-          fail(`Expected command to fail for dangerous name: ${dangerousName}`);
+          throw new Error(`Expected command to fail for dangerous name: ${dangerousName}`);
         } catch (error) {
           // Expected behavior - command should fail
           expect(error).toBeDefined();
@@ -105,14 +105,6 @@ describe('Security tests', () => {
     });
 
     it('should handle edge cases gracefully', () => {
-      // Test empty strings and special characters
-      const edgeCases = [
-        '', // Empty string should default to .env
-        '.', // Just a dot
-        '..', // Should be rejected
-        '...', // Multiple dots (invalid pattern)
-      ];
-
       // Empty string should work (defaults to .env)
       let result = execSync(`printf "\\n1000\\n" | node ${cliPath} init`, { 
         encoding: 'utf-8',
@@ -130,7 +122,7 @@ describe('Security tests', () => {
           encoding: 'utf-8',
           stdio: 'pipe'
         });
-        fail('Expected command to fail for ".." path');
+        throw new Error('Expected command to fail for ".." path');
       } catch (error) {
         // Expected behavior - command should fail
         expect(error).toBeDefined();
