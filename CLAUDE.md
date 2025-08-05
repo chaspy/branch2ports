@@ -41,6 +41,14 @@ This document outlines the rules and guidelines for AI assistants working on thi
 - Ensure all CI checks pass
 - Even after version bump, wait for explicit release instruction
 
+### Automated Release System (2025-08-05)
+- **IMPORTANT**: This repository has an automated release system
+- When package.json version is changed and pushed to main branch, NPM release runs automatically
+- If user says "次のバージョンリリースして" or "release next version":
+  1. Use the Version Bump workflow in GitHub Actions OR
+  2. Run `npm version patch/minor/major` locally and push
+  3. The release will happen automatically via CI/CD
+- This automated system is considered "explicit permission" for release
 ## Communication
 
 ### Language
@@ -93,4 +101,4 @@ git commit -m "chore: bump version to 0.1.2"
 
 ---
 
-Last updated: 2025-08-04
+Last updated: 2025-08-05
